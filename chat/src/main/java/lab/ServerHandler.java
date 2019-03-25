@@ -44,6 +44,10 @@ class ServerHandler extends Thread {
                     Server.clientController.leaveClient(message.getId());
                     continue;
                 }
+                if(message.getMessage().equals("/exit")){
+                    Server.clientController.removeClient(message.getI());
+                    continue;
+                }
                 System.out.println("Socket: " + socket + " Message: " + message.getMessage());
                 DateFormat dateFormat = new SimpleDateFormat("hh:mm");
                 String complite = message.getName() + " (" + dateFormat.format(message.gerDate())
@@ -72,6 +76,7 @@ class ServerHandler extends Thread {
 
     public void sendMsg(String message) {
         out.println(message);
+        out.flush();
     }
 
     public String getUsername() {

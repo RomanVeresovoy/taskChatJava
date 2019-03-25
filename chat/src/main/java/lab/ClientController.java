@@ -6,8 +6,7 @@ class ClientController {
 
     public static int k = 0;
     public static String kk;
-    private ArrayList<ServerHandler> list = new ArrayList<ServerHandler>();
-
+    private List<ServerHandler> list = Collections.synchronizedList( new ArrayList<ServerHandler>());
 
     public boolean firstSendMess(String username, String message, int idClient) {
         synchronized (list) {
@@ -49,6 +48,16 @@ class ClientController {
                 break;
             }
         }
+    }
+
+    public void removeClient(int id){
+        for(int i = 0; i<list.size();i++){
+            if(list.get(i).getid() == id) {
+                list.remove(i);
+                break;
+            }
+        }
+
     }
 
 
