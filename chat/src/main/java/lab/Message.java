@@ -9,17 +9,15 @@ public class Message implements Serializable {
     private String username;
     private String message;
     private Date date;
+    private int idAddress = 0;
     private int id = 0;
-    private int i = 0;
 
-
-
-    public Message(String username, String message, Date date2, int id, int i) {
+    public Message(String username, String message, Date date2, int idAddress, int id) {
         this.message = message;
         this.username = username;
         this.date = date2;
+        this.idAddress = idAddress;
         this.id = id;
-        this.i = i;
     }
 
     public String getName() {
@@ -34,14 +32,16 @@ public class Message implements Serializable {
         return date;
     }
 
+    public int getIdAddress() {
+        return idAddress;
+    }
+
+    public void setIdAddress(int idAddress) {
+        this.idAddress = idAddress;
+    }
+
     public int getId() {
         return id;
-    }
-    public void setId(int id) {
-        this.id = id;
-    }
-    public int getI() {
-        return i;
     }
 
 

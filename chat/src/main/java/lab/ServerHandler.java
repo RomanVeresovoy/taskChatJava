@@ -14,8 +14,10 @@ class ServerHandler extends Thread {
     private String reverseName;
     private boolean Free = true;
     private String command;
-    private static int idKey = 100;
-    private int id = 0;
+    private static long idKey = 100;
+    private long id = 0;
+
+    public ServerHandler(){}
 
     public ServerHandler(Socket s) throws IOException {
         socket = s;
@@ -35,30 +37,32 @@ class ServerHandler extends Thread {
                 username = "agent";
                 reverseName = "client";
             }
-            idKey++;
-            id = idKey;
+            synchronized (this) {
+                idKey++;
+                id = idKey;
+            }
             this.sendMsg("*" + id + "*");
             while (true) {
                 Message message = (Message) ois.readObject();
                 if (message.getMessage().equals("/leave")) {
-                    Server.clientController.leaveClient(message.getId());
+                    Server.clientController.leaveClient(message.getIdAddress());
                     continue;
                 }
-                if(message.getMessage().equals("/exit")){
-                    Server.clientController.removeClient(message.getI());
+                if (message.getMessage().equals("/exit")) {
+                    Server.clientController.removeClient(message.getId());
                     continue;
                 }
                 System.out.println("Socket: " + socket + " Message: " + message.getMessage());
                 DateFormat dateFormat = new SimpleDateFormat("hh:mm");
                 String complite = message.getName() + " (" + dateFormat.format(message.gerDate())
                         + ") " + ": " + message.getMessage();
-                if (message.getId() == 0) {
-                    if (Server.clientController.firstSendMess(reverseName, complite, message.getI()))
+                if (message.getIdAddress() == 0) {
+                    if (Server.clientController.firstSendMess(reverseName, complite, message.getId()))
                         this.sendMsg("*" + ClientController.kk + "*");
                     else
                         this.sendMsg("null");
                 } else
-                    Server.clientController.sendMess(message.getId(), reverseName, complite);
+                    Server.clientController.sendMess(message.getIdAddress(), reverseName, complite);
             }
         } catch (IOException e) {
             System.err.println("Error I/O");
@@ -83,6 +87,10 @@ class ServerHandler extends Thread {
         return username;
     }
 
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
     public boolean isFree() {
         return Free;
     }
@@ -91,7 +99,7 @@ class ServerHandler extends Thread {
         Free = free;
     }
 
-    public int getid() {
+    public long getid() {
         return id;
     }
 

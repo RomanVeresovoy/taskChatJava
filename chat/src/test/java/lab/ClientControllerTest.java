@@ -1,36 +1,64 @@
 package lab;
 
-import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.asset.EmptyAsset;
-import org.jboss.shrinkwrap.api.spec.JavaArchive;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.*;
+import java.io.IOException;
+import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
-@RunWith(Arquillian.class)
-public class ClientControllerTest {
-    @Deployment
-    public static JavaArchive createDeployment() {
-        return ShrinkWrap.create(JavaArchive.class)
-                .addClass(ClientController.class)
-                .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
+import static org.junit.jupiter.api.Assertions.*;
+
+class ClientControllerTest {
+
+    @Test
+    void firstSendMess() {
     }
 
-    @org.junit.Test
-    public void firstSendMess() {
+    @Test
+    void getFreeClient() throws IOException {
+        Socket s =  new Socket();
+        List<ServerHandler> list = new ArrayList<ServerHandler>();
+        ServerHandler sH = new ServerHandler(s);
+        sH.setUsername("agent");
+        sH.setFree(true);
+        list.add(sH);
+        sH.setUsername("agent");
+        sH.setFree(false);
+        list.add(sH);
+
+
+
     }
 
-    @org.junit.Test
-    public void addUser() {
+    @Test
+    void addUser() {
+        ServerHandler sH = new ServerHandler();
+        ServerHandler sH1 = new ServerHandler();
+        List<ServerHandler> list = new ArrayList<ServerHandler>();
+        assertEquals(0, list.size());
+        list.add(sH);
+        assertEquals(1,list.size());
+        list.add(sH1);
+        assertEquals(2,list.size());
     }
 
-    @org.junit.Test
-    public void sendMess() {
+    @Test
+    void sendMess() {
     }
 
-    @org.junit.Test
-    public void leaveClient() {
+    @Test
+    void leaveClient() {
+    }
+
+    @Test
+    void removeClient() {
+        ServerHandler sH = new ServerHandler();
+        ServerHandler sH1 = new ServerHandler();
+        List<ServerHandler> list = new ArrayList<ServerHandler>();
+        list.add(sH);
+        list.add(sH1);
+        list.remove(1);
+        assertEquals(1,list.size());
     }
 }

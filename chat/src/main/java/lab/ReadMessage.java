@@ -17,10 +17,9 @@ class ReadMessage implements Runnable {
     public void run() {
         try {
             while (true) {
-
                 String str;
                 String s = in.readLine();
-                if(s.equals("null")){
+                if (s.equals("null")) {
                     System.out.println("Нет свободных агентов!");
                     continue;
                 }
@@ -34,13 +33,11 @@ class ReadMessage implements Runnable {
                     str = s;
                     String idString = str.substring(str.indexOf('*') + 1, str.lastIndexOf('*'));
                     idAddres = Integer.parseInt(idString);
-                    String s1 = s.substring(0,s.indexOf('*'));
+                    String s1 = s.substring(0, s.indexOf('*'));
                     System.out.println(s1);
                     continue;
                 }
                 System.out.println(s);
-
-
             }
         } catch (IOException e) {
             System.err.println("Error I/OO");
